@@ -1,0 +1,9 @@
+domain: weatherservice.iqbal.com
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: weather-operator
+repo: github.com/singhiqbal1007/weather-operator
+version: "3"
