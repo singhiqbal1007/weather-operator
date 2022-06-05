@@ -1,0 +1,24 @@
+# permissions for end users to edit weatherservices.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: weatherservice-editor-role
+rules:
+- apiGroups:
+  - weatherservice.iqbal.com
+  resources:
+  - weatherservices
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - weatherservice.iqbal.com
+  resources:
+  - weatherservices/status
+  verbs:
+  - get

@@ -1,0 +1,6 @@
+apiVersion: weatherservice.iqbal.com/v1alpha1
+kind: WeatherService
+metadata:
+  name: weatherservice-sample
+spec:
+  # TODO(user): Add fields here
