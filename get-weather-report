@@ -1,0 +1,37 @@
+ #!/bin/sh
+
+CITY=$1
+DAYS=${2:-1}
+NAMESPACE=`kubectl get namespaces weather-operator-system -o jsonpath={.metadata.name} 2> /dev/null | xargs`
+if [[ $NAMESPACE == "" ]]; then
+    NAMESPACE='default'
+fi
+
+if [[ -z $CITY ]] ; then
+    echo "[ERROR] Please Enter City Name"
+    exit 1
+fi
+
+FILE_PATH="./config/samples/${CITY}.yaml"
+# check if file exists
+if [ -f $FILE_PATH ]; then
+  echo "[INFO] updating $FILE_PATH"
+else
+  echo "[INFO] creating $FILE_PATH"
+fi
+cat ./config/template/city.yaml | awk "{gsub(/cityname/,\"${CITY}\"); print}" | awk "{gsub(/daycount/,${DAYS}); print}" > $FILE_PATH
+
+echo "[INFO] Using namespace: $NAMESPACE"
+kubectl -n $NAMESPACE apply -f $FILE_PATH
+
+echo "[INFO] Waiting for weather-report-${CITY} pod to be ready..."
+while [ true ]; do
+    STATUS=`kubectl -n ${NAMESPACE} get pods weather-report-${CITY} --no-headers -o custom-columns=":status.phase" 2> /dev/null | xargs || true`
+    if [[ $STATUS == "Running" ]]; then
+      echo "[INFO] weather-report-${CITY} pod is ready"
+      break
+    fi
+    sleep 1
+done
+
+kubectl -n $NAMESPACE logs weather-report-${CITY}

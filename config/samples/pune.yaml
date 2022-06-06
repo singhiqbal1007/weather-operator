@@ -1,0 +1,7 @@
+apiVersion: weatherservice.iqbal.com/v1alpha1
+kind: WeatherService
+metadata:
+  name: pune
+spec:
+  city: pune
+  days: 1

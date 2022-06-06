@@ -1,6 +1,7 @@
 apiVersion: weatherservice.iqbal.com/v1alpha1
 kind: WeatherService
 metadata:
-  name: weatherservice-sample
+  name: dehradun
 spec:
-  # TODO(user): Add fields here
+  city: dehradun
+  days: 1
